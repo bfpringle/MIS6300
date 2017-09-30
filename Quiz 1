@@ -1,0 +1,48 @@
+SQL Quiz 
+
+Show First name and last name of employees whose job title is “Sales Representative”, ranking from oldest to youngest. You may use HumanResources.Employee table and Person.Person table. (14 rows)*/
+
+USE AdventureWorks2012 
+SELECT p.BusinessEntityID as ID, HR.BusinessEntityID, p.FirstName, p.LastName, HR.JobTitle, HR.BirthDate
+FROM HumanResources.Employee AS HR 
+JOIN Person.Person as P 
+ON p.BusinessEntityID = HR.BusinessEntityID
+WHERE JobTitle = 'Sales Representative'
+ORDER BY BirthDate ASC
+
+
+Find out all the products which sold more than $5000 in total. Show product ID and name and total amount collected after selling the products. You may use LineTotal from Sales.SalesOrderDetail table and Production.Product table. (254 rows)*/
+
+USE AdventureWorks2012
+SELECT DISTINCT s.ProductID, p.Name, s.UnitPrice, s.LineTotal
+FROM SAles.SalesOrderDetail as S
+JOin Production.Product as P
+ON s.ProductID = p.ProductID 
+WHERE s.LineTotal >5000
+ORDER BY s.UnitPrice
+
+***Could not figure out how to remove duplicate fields
+
+
+Show BusinessEntityID, territory name and SalesYTD of all sales persons whose SalesYTD is greater than $500,000, regardless of whether they are assigned a territory. You may use Sales.SalesPerson table and Sales.SalesTerritory table. (16 rows)*/
+
+USE AdventureWorks2012
+SELECT sp.BusinessEntityID, 
+sp.TerritoryID, 
+ST.Name,
+(sp.SalesYTD) 
+FROM sales.SalesTerritory as ST full outer join sales.SalesPerson as SP
+ON sp.TerritoryID = sT.TerritoryID 
+WHERE sp.SalesYTD >500000
+ORDER BY sp.SalesYTD DESC
+
+
+Show the sales order ID of those orders in the year 2008 of which the total due is great than the average total due of all the orders of the same year. (3200 rows)*/
+USE AdventureWorks2012
+SELECT SalesOrderID, TotalDue
+FROM sales.SalesOrderHeader
+WHERE TotalDue > AVG(TotalDue)
+	
+HAVING TotalDue>0
+GROUP By SalesOrderID
+Order By SalesOrderID
